@@ -1,0 +1,332 @@
+﻿<Window x:Class="CustomerBase.View.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:vm="clr-namespace:CustomerBase.ViewModel"
+        mc:Ignorable="d"
+        Title="Customer Base"
+        Height="{Binding Source={StaticResource Settings}, Path=Default.WindowHeight, Mode=TwoWay}"
+        Width="{Binding Source={StaticResource Settings}, Path=Default.WindowWidth, Mode=TwoWay}"
+        Left="{Binding Source={StaticResource Settings}, Path=Default.WindowLeft, Mode=TwoWay}"
+        Top="{Binding Source={StaticResource Settings}, Path=Default.WindowTop, Mode=TwoWay}"
+        WindowState="{Binding Source={StaticResource Settings}, Path=Default.WindowState, Mode=TwoWay}"
+        MinHeight="400"
+        MinWidth="600"
+        WindowStartupLocation="Manual"
+        Closing="Window_Closing">
+
+    <Window.DataContext>
+        <vm:CustomerViewModel x:Name="viewModel"></vm:CustomerViewModel>
+    </Window.DataContext>
+
+    <DockPanel LastChildFill="True">
+
+        <Menu DockPanel.Dock="Top">
+            <MenuItem Header="_File" Padding="3">
+                <MenuItem
+                    Header="E_xit"
+                    Command="{Binding ExitCommand}"></MenuItem>
+            </MenuItem>
+
+            <MenuItem Header="_Edit">
+                <MenuItem
+                    Header="Cu_t"
+                    Command="ApplicationCommands.Cut"></MenuItem>
+                <MenuItem
+                    Header="_Copy"
+                    Command="ApplicationCommands.Copy"></MenuItem>
+                <MenuItem
+                    Header="_Paste"
+                    Command="ApplicationCommands.Paste"></MenuItem>
+                <Separator></Separator>
+                <MenuItem
+                    Header="_Select All"
+                    Command="ApplicationCommands.SelectAll"></MenuItem>
+            </MenuItem>
+
+            <MenuItem Header="_Customer">
+                <MenuItem
+                    Header="_New"
+                    Command="{Binding NewCustomerCommand}"></MenuItem>
+                <MenuItem
+                    Header="_Delete"
+                    Command="{Binding DeleteCustomerCommand}"></MenuItem>
+                <MenuItem
+                    Header="_Update"
+                    Command="{Binding UpdateCustomerCommand}"></MenuItem>
+                <MenuItem
+                    Header="_Save"
+                    Command="{Binding SaveCustomerCommand}"></MenuItem>
+                <MenuItem
+                    Header="_Cancel"
+                    Command="{Binding CancelCustomerCommand}"></MenuItem>
+                <Separator></Separator>
+                <MenuItem
+                    Header="_Search"
+                    Command="{Binding SearchCustomerCommand}"></MenuItem>
+            </MenuItem>
+        </Menu>
+
+        <Grid Margin="5">
+
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"></RowDefinition>
+            </Grid.RowDefinitions>
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="200"></ColumnDefinition>
+                <ColumnDefinition Width="*"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+
+            <Grid Grid.Row="0" Grid.Column="0" Margin="0,0,5,0">
+
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="*"></RowDefinition>
+                </Grid.RowDefinitions>
+
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                    <ColumnDefinition Width="Auto"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+
+                <TextBox
+                    Grid.Row="0"
+                    Grid.Column="0"
+                    Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}"
+                    VerticalAlignment="Center"
+                    Padding="2"></TextBox>
+
+                <Button
+                    Grid.Row="0"
+                    Grid.Column="1"
+                    Content="Search"
+                    Command="{Binding SearchCommand}"
+                    Padding="2"
+                    Width="65"
+                    Margin="5,0,0,0"></Button>
+
+                <ListBox
+                    Grid.Row="1"
+                    Grid.Column="0"
+                    Grid.ColumnSpan="2"
+                    Name="listCustomers"
+                    Margin="0,5,0,0"
+                    ItemsSource="{Binding Customers}"
+                    SelectedIndex="{Binding SelectedIndex}"
+                    DisplayMemberPath="Name"
+                    IsEnabled="{Binding IsViewing}"></ListBox>
+
+            </Grid>
+
+            <DockPanel Grid.Row="0" Grid.Column="1" Margin="5,0,0,0" LastChildFill="True">
+
+                <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal" HorizontalAlignment="Right">
+
+                    <Button
+                        Content="New"
+                        Width="60"
+                        Height="30"
+                        Margin="10,0,0,0"
+                        Command="{Binding NewCustomerCommand}"></Button>
+
+                    <Button
+                        Content="Delete"
+                        Width="60"
+                        Height="30"
+                        Margin="10,0,0,0"
+                        Command="{Binding DeleteCustomerCommand}"></Button>
+
+                    <Button
+                        Content="Update"
+                        Width="60"
+                        Height="30"
+                        Margin="10,0,0,0"
+                        Command="{Binding UpdateCustomerCommand}"></Button>
+
+                    <Button
+                        Content="Save"
+                        Width="60"
+                        Height="30"
+                        Margin="10,0,0,0"
+                        Command="{Binding SaveCustomerCommand}"></Button>
+
+                    <Button
+                        Content="Cancel"
+                        Width="60"
+                        Height="30"
+                        Margin="10,0,0,0"
+                        Command="{Binding CancelCustomerCommand}"></Button>
+
+                </StackPanel>
+
+                <StackPanel Orientation="Vertical">
+
+                    <GroupBox Header="Customer" Padding="10">
+
+                        <Grid>
+
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"></RowDefinition>
+                                <RowDefinition Height="Auto"></RowDefinition>
+                                <RowDefinition Height="Auto"></RowDefinition>
+                            </Grid.RowDefinitions>
+
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"></ColumnDefinition>
+                                <ColumnDefinition Width="*"></ColumnDefinition>
+                            </Grid.ColumnDefinitions>
+
+                            <Label
+                                Grid.Row="0"
+                                Grid.Column="0"
+                                Content="Name: *"></Label>
+                            <TextBox
+                                Name="txtName"
+                                Grid.Row="0"
+                                Grid.Column="1"
+                                VerticalAlignment="Center"
+                                Padding="2"
+                                Text="{Binding Customer.Name, UpdateSourceTrigger=PropertyChanged}"
+                                MaxLength="50"
+                                IsEnabled="{Binding IsEditing}"></TextBox>
+
+                            <Label
+                                Grid.Row="1"
+                                Grid.Column="0"
+                                Content="Email:"></Label>
+                            <TextBox
+                                Name="txtEmail"
+                                Grid.Row="1"
+                                Grid.Column="1"
+                                VerticalAlignment="Center"
+                                Padding="2"
+                                Text="{Binding Customer.Email, UpdateSourceTrigger=PropertyChanged}"
+                                MaxLength="50"
+                                IsEnabled="{Binding IsEditing}"></TextBox>
+
+                            <Label
+                                Grid.Row="2"
+                                Grid.Column="0"
+                                Content="Phone number:"></Label>
+                            <TextBox
+                                Name="txtPhoneNumber"
+                                Grid.Row="2"
+                                Grid.Column="1"
+                                VerticalAlignment="Center"
+                                Padding="2"
+                                Text="{Binding Customer.PhoneNumber, UpdateSourceTrigger=PropertyChanged}"
+                                MaxLength="14"
+                                IsEnabled="{Binding IsEditing}"
+                                PreviewTextInput="HandleSpecialChars"
+                                PreviewKeyDown="HandleSpaceChar"></TextBox>
+
+                        </Grid>
+
+                    </GroupBox>
+
+                    <GroupBox Header="Address" Padding="10">
+
+                        <Grid>
+
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"></RowDefinition>
+                                <RowDefinition Height="Auto"></RowDefinition>
+                                <RowDefinition Height="Auto"></RowDefinition>
+                                <RowDefinition Height="Auto"></RowDefinition>
+                                <RowDefinition Height="Auto"></RowDefinition>
+                            </Grid.RowDefinitions>
+
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"></ColumnDefinition>
+                                <ColumnDefinition Width="*"></ColumnDefinition>
+                            </Grid.ColumnDefinitions>
+
+                            <Label
+                                Grid.Row="0"
+                                Grid.Column="0"
+                                Content="Street: *"></Label>
+                            <TextBox
+                                Name="txtStreet"
+                                Grid.Row="0"
+                                Grid.Column="1"
+                                VerticalAlignment="Center"
+                                Padding="2"
+                                Text="{Binding Customer.Address.Street, UpdateSourceTrigger=PropertyChanged}"
+                                MaxLength="50"
+                                IsEnabled="{Binding IsEditing}"></TextBox>
+
+                            <Label
+                                Grid.Row="1"
+                                Grid.Column="0"
+                                Content="Number: *"></Label>
+                            <TextBox
+                                Name="txtNumber"
+                                Grid.Row="1"
+                                Grid.Column="1"
+                                VerticalAlignment="Center"
+                                Padding="2"
+                                Text="{Binding Customer.Address.Number, UpdateSourceTrigger=PropertyChanged}"
+                                MaxLength="6"
+                                IsEnabled="{Binding IsEditing}"
+                                PreviewTextInput="HandleSpecialChars"
+                                PreviewKeyDown="HandleSpaceChar"></TextBox>
+
+                            <Label
+                                Grid.Row="2"
+                                Grid.Column="0"
+                                Content="Complement:"></Label>
+                            <TextBox
+                                Name="txtComplement"
+                                Grid.Row="2"
+                                Grid.Column="1"
+                                VerticalAlignment="Center"
+                                Padding="2"
+                                Text="{Binding Customer.Address.Complement, UpdateSourceTrigger=PropertyChanged}"
+                                MaxLength="30"
+                                IsEnabled="{Binding IsEditing}"></TextBox>
+
+                            <Label
+                                Grid.Row="3"
+                                Grid.Column="0"
+                                Content="District:"></Label>
+                            <TextBox
+                                Name="txtDistrict"
+                                Grid.Row="3"
+                                Grid.Column="1"
+                                VerticalAlignment="Center"
+                                Padding="2"
+                                Text="{Binding Customer.Address.District, UpdateSourceTrigger=PropertyChanged}"
+                                MaxLength="30"
+                                IsEnabled="{Binding IsEditing}"></TextBox>
+
+                            <Label
+                                Grid.Row="4"
+                                Grid.Column="0"
+                                Content="Zip code: *"></Label>
+                            <TextBox
+                                Name="txtZipCode"
+                                Grid.Row="4"
+                                Grid.Column="1"
+                                VerticalAlignment="Center"
+                                Padding="2"
+                                Text="{Binding Customer.Address.ZipCode, UpdateSourceTrigger=PropertyChanged}"
+                                MaxLength="9"
+                                IsEnabled="{Binding IsEditing}"
+                                PreviewTextInput="HandleSpecialChars"
+                                PreviewKeyDown="HandleSpaceChar"></TextBox>
+
+                        </Grid>
+
+                    </GroupBox>
+
+                </StackPanel>
+
+            </DockPanel>
+
+        </Grid>
+
+    </DockPanel>
+
+</Window>
